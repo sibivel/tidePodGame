@@ -8,6 +8,7 @@ var fallSpeed = 5;
 var face = document.createElement('img');
 var pod = document.createElement('img');
 var highscore = -1;
+var xOffset = 0;
 face.src = "./images/open-mouth.png";
 pod.src = "./images/tide-pods.png";
 function startGame() {
@@ -27,6 +28,7 @@ function startGame() {
     height = 15*mult;
     myGamePiece = new component(width, height, "blue", 10, myGameArea.canvas.height-height, "player");
     myScore = new component("30px", "Consolas", "black", myGameArea.canvas.width-170, 40, "text");
+    xOffset = getPosition(myGameArea.canvas).x;
 }
       
 
@@ -75,12 +77,13 @@ ctx.addEventListener("touchmove", setFingerPosition, false);
 
 ctx.style.cursor = 'none';
 function setMousePosition(e) {
- mouseX = e.clientX;
+ mouseX = e.x-xOffset
+ console.log(xOffset);
  mouseY = e.clientY;
 }
 function setFingerPosition(e) {
     var touches = e.touches;
-    mouseX = touches[0].clientX;
+    mouseX = touches[0].clientX-xOffset;
     mouseY = touches[0].clientY;
 }
 function component(width, height, color, x, y, type) {
@@ -189,8 +192,8 @@ function updateGameArea() {
     if(everyinterval(350)){
         if(fallSpeed < 40){
             fallSpeed *= 1.3;
-            intervalSize -= 1;
         }
+        intervalSize -= 1;
     }
     for (i = 0; i < myObstacles.length; i += 1) {
         myObstacles[i].update();
@@ -245,3 +248,29 @@ function playAgain(){
         myGameArea.again();
     }
 }
+
+function getPosition(el) {
+    var xPos = 0;
+    var yPos = 0;
+   
+    while (el) {
+      if (el.tagName == "BODY") {
+        // deal with browser quirks with body/window/document and page scroll
+        var xScroll = el.scrollLeft || document.documentElement.scrollLeft;
+        var yScroll = el.scrollTop || document.documentElement.scrollTop;
+   
+        xPos += (el.offsetLeft - xScroll + el.clientLeft);
+        yPos += (el.offsetTop - yScroll + el.clientTop);
+      } else {
+        // for all other non-BODY elements
+        xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+        yPos += (el.offsetTop - el.scrollTop + el.clientTop);
+      }
+   
+      el = el.offsetParent;
+    }
+    return {
+      x: xPos,
+      y: yPos
+    };
+  }
