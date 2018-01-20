@@ -68,7 +68,7 @@ var myGameArea = {
 var ctx = myGameArea.canvas
 ctx.addEventListener("mousemove", setMousePosition, false);
 ctx.addEventListener("mousedown", playAgain, false);
-// ctx.addEventListener("touchstart", setMousePosition, false);
+ctx.addEventListener("touchstart", setFingerPosition, false);
 // ctx.addEventListener("touchend", setMousePosition, false);
 // ctx.addEventListener("touchcancel", setMousePosition, false);
 ctx.addEventListener("touchmove", setFingerPosition, false);
