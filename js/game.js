@@ -12,10 +12,9 @@ face.src = "./images/open-mouth.png";
 pod.src = "./images/tide-pods.png";
 function startGame() {
    
-    myScore = new component("30px", "Consolas", "black", 280, 40, "text");
     myHighScore = new component("30px", "Consolas", "black", 5, 80, "text");
     if(highscore > 0){
-       myHighScore.text = "High Score: " + highscore;
+        myHighScore.text = "High Score: " + highscore;
     }else{
         myHighScore.text = ""
     }
@@ -27,6 +26,7 @@ function startGame() {
     width = 11*mult;
     height = 15*mult;
     myGamePiece = new component(width, height, "blue", 10, myGameArea.canvas.height-height, "player");
+    myScore = new component("30px", "Consolas", "black", myGameArea.canvas.width-170, 40, "text");
 }
       
 
@@ -34,8 +34,11 @@ var factor = 0.4;
 var myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
-        this.canvas.width = 1080 * factor;
-        this.canvas.height = 1920 * factor;
+        this.canvas.style.margin = "0 auto";
+        this.canvas.style.display = "block";
+        
+        this.canvas.width = Math.min(1080 * factor, screen.width*0.8);
+        this.canvas.height = Math.min(1920 * factor, screen.height*0.8);
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
@@ -65,14 +68,21 @@ var myGameArea = {
 var ctx = myGameArea.canvas
 ctx.addEventListener("mousemove", setMousePosition, false);
 ctx.addEventListener("mousedown", playAgain, false);
-
+// ctx.addEventListener("touchstart", setMousePosition, false);
+// ctx.addEventListener("touchend", setMousePosition, false);
+// ctx.addEventListener("touchcancel", setMousePosition, false);
+ctx.addEventListener("touchmove", setFingerPosition, false);
 
 ctx.style.cursor = 'none';
 function setMousePosition(e) {
  mouseX = e.clientX;
  mouseY = e.clientY;
 }
-
+function setFingerPosition(e) {
+    var touches = e.touches;
+    mouseX = touches[0].clientX;
+    mouseY = touches[0].clientY;
+}
 function component(width, height, color, x, y, type) {
     this.type = type;
     this.score = 0;
