@@ -190,10 +190,11 @@ function updateGameArea() {
         myObstacles.push(obstacle);
     }
     if(everyinterval(350)){
-        if(fallSpeed < 40){
+        if(fallSpeed < 30){
             fallSpeed *= 1.3;
         }
-        intervalSize -= 1;
+        if(intervalSize > 10)
+            intervalSize -= 1;
     }
     for (i = 0; i < myObstacles.length; i += 1) {
         myObstacles[i].update();
