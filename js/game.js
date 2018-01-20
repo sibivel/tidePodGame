@@ -59,6 +59,7 @@ var myGameArea = {
         for(var i = 0; i < 3; i+=1){
             lives.push(new component(30, 30, "blue", i*40, 10, "life"))
         }
+        intervalSize = 70;
     } 
 }
 var ctx = myGameArea.canvas
@@ -140,7 +141,7 @@ function component(width, height, color, x, y, type) {
     }
     
 }
-
+var intervalSize = 70
 function updateGameArea() {
     if(ended){
         myGameArea.clear();
@@ -166,7 +167,7 @@ function updateGameArea() {
     }
     myGameArea.clear();
     myGameArea.frameNo += 1;
-    if (myGameArea.frameNo == 1 || everyinterval(70)) {
+    if (myGameArea.frameNo == 1 || everyinterval(intervalSize)) {
         x = myGameArea.canvas.width;
         width = 60;
         height = 60;
@@ -178,6 +179,7 @@ function updateGameArea() {
     if(everyinterval(350)){
         if(fallSpeed < 40){
             fallSpeed *= 1.3;
+            intervalSize -= 1;
         }
     }
     for (i = 0; i < myObstacles.length; i += 1) {
